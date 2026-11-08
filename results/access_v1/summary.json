@@ -1,0 +1,58 @@
+{
+ "block_groups": 3018,
+ "eea_tracts_matched": 364,
+ "gini_60_pre": 0.6778,
+ "gini_60_post": 0.6813,
+ "share_people_zero_jobs_60_pre": 0.0,
+ "share_people_zero_jobs_60_post": 0.0,
+ "run_meta": {
+  "pre": {
+   "label": "pre",
+   "date": "2025-05-14",
+   "bus": "mdb-1846-202505020000",
+   "rail": "mdb-1847-202505140012",
+   "start": "07:00",
+   "window_min": 120,
+   "max_min": 60,
+   "sample": 0,
+   "memory": "48G",
+   "out": "access_v1",
+   "commit": "fba745cfa3eb168e75e01401332c207a5442df60",
+   "osm": "dmv-study-region-261106.osm.pbf",
+   "gtfs": [
+    "mdb-1846-202505020000.zip",
+    "mdb-1847-202505140012.zip"
+   ],
+   "r5py": "1.1.7",
+   "origins": 3018,
+   "destinations": 4132,
+   "seconds_network": 6,
+   "seconds_matrix": 235,
+   "created_at": "2026-11-08T02:48:40Z"
+  },
+  "post": {
+   "label": "post",
+   "date": "2025-10-22",
+   "bus": "mdb-1846-202510160132",
+   "rail": "mdb-1847-202510220038",
+   "start": "07:00",
+   "window_min": 120,
+   "max_min": 60,
+   "sample": 0,
+   "memory": "48G",
+   "out": "access_v1",
+   "commit": "11334adf462dec8d3c00cb410d4fbff285f668d3",
+   "osm": "dmv-study-region-261106.osm.pbf",
+   "gtfs": [
+    "mdb-1846-202510160132.zip",
+    "mdb-1847-202510220038.zip"
+   ],
+   "r5py": "1.1.7",
+   "origins": 3018,
+   "destinations": 4132,
+   "seconds_network": 96,
+   "seconds_matrix": 218,
+   "created_at": "2026-11-08T02:53:58Z"
+  }
+ }
+}
