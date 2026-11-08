@@ -127,7 +127,7 @@ def main(argv=None):
             k: json.loads((store / k / "run_meta.json").read_text()) for k in (args.a, args.b)
         },
     }
-    (out / "summary.json").write_text(json.dumps(summary, indent=1, default=str))
+    (out / "summary.json").write_text(json.dumps(summary, indent=1, default=str) + "\n")
     cols = [
         "group",
         "people",
