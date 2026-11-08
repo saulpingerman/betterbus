@@ -64,6 +64,11 @@ NAMES = {
     "stable11": "One old to one new route",
     "lowfreq": "Infrequent routes",
     "highfreq": "Frequent routes",
+    "S1": "Speed held",
+    "S2b": "Reallocate (a)",
+    "S2h": "Reallocate (b)",
+    "S3b": "Both (a)",
+    "S3h": "Both (b)",
 }
 
 
@@ -207,9 +212,50 @@ def fig_elasticities():
     save(fig, "fig4_elasticities")
 
 
+def fig_scenarios():
+    alt = json.loads((RES / "alternatives_v3" / "summary.json").read_text())
+    acc = pd.read_csv(RES / "access_comparisons.csv")
+    acc = acc[acc.a == "post_regional"]
+    ridership_key = {"S1": "S1", "S2b": "S2", "S2h": "S2h", "S3b": "S3", "S3h": "S3h"}
+    colors = {"S1": BLUE, "S2b": VERMILLION, "S2h": VERMILLION, "S3b": BLACK, "S3h": BLACK}
+    fig, axes = plt.subplots(1, 2, figsize=(WIDTH, 2.6), sharex=True, sharey=True)
+    for ax, grp, letter in zip(axes, ["everyone", "eea_residents"], "ab", strict=True):
+        ax.axhline(0, color=GRAY, lw=0.6)
+        ax.axvline(0, color=GRAY, lw=0.6)
+        for k, rk in ridership_key.items():
+            r = alt[rk]
+            y = acc[(acc.b == f"{k}_regional") & (acc.group == grp)].pct.iloc[0]
+            filled = k.endswith("b") or k == "S1"
+            ax.errorbar(
+                r["riders_change_pct"],
+                y,
+                xerr=[[r["riders_change_pct"] - r["p05"]], [r["p95"] - r["riders_change_pct"]]],
+                fmt="o",
+                color=colors[k],
+                mfc=colors[k] if filled else "white",
+                ecolor=colors[k],
+                elinewidth=0.8,
+            )
+            if letter == "b":
+                ax.annotate(
+                    name(k),
+                    (r["riders_change_pct"], y),
+                    xytext=(0, 6),
+                    ha="center",
+                    textcoords="offset points",
+                    fontsize=7,
+                    color=colors[k],
+                )
+        ax.text(-0.14, 1.02, letter, transform=ax.transAxes, fontweight="bold")
+    axes[0].set_ylabel("Change in jobs reachable\nwithin 60 minutes (%)")
+    fig.supxlabel("Predicted change in boardings (%)", fontsize=9, y=0.02)
+    fig.tight_layout()
+    save(fig, "fig5_scenarios")
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    which = sys.argv[1:] or ["system", "event", "decomposition", "elasticities"]
+    which = sys.argv[1:] or ["system", "event", "decomposition", "elasticities", "scenarios"]
     for w in which:
         globals()[f"fig_{w}"]()
 
