@@ -143,3 +143,16 @@ Headers are written with the clock:
 - Error: families with no pre-launch midday service (peak-only routes, no headway value) were classed as frequent and could give up hours in S2. They now sit out S2 (neither give nor receive). Results moved to results/alternatives_v2; alternatives_v1 is superseded for S2 and S3 (S1 unchanged).
 - Corrected: S2 riders +2.80% (2.00 to 3.84); S3 +3.96% (3.07 to 5.07). 17 donor and 13 recipient families; Equity Emphasis Area share of stop events, donors 0.355, recipients 0.449; 85.6% of added hours go to low-frequency families, 7.2% of cut hours come from them. Decomposition_v1 rerun identically.
 - Scenario access runs on alternatives_v1 S2 and S3 feeds are superseded; the feeds are rebuilt as scenario_feeds_v2.
+
+## 2026-11-08T04:00Z | mechanisms_v1 | decision
+- Exploratory robustness of the headway split before relying on it for S2 (logged before running): (1) continuous interaction post x D_trips x log(pre-launch midday headway, centered at the median); (2) the binary split on families with containment and inflow both >= 0.7; (3) the binary split on families with containment and inflow both >= 0.9.
+
+## 2026-11-08T04:00Z | mechanisms_v1 | result (exploratory)
+- Continuous interaction (90 families): D_trips 0.648 (0.506 to 0.790) at the median headway; D_trips x log(headway / median) 0.367 (0.114 to 0.620).
+- Binary split on families with containment and inflow >= 0.7 (40 families, 16 low-frequency): low-frequency 0.594 (0.230 to 0.958), high-frequency 0.688 (0.393 to 0.982). At >= 0.9 (17 families, 9 low-frequency): 0.647 (0.404 to 0.890) and 1.073 (-0.168 to 2.314).
+- Reading: the larger response on infrequent routes does not survive restriction to families with little rider reassignment between families, so it may partly reflect infrequent families absorbing stops. S2 as specified rests on that heterogeneity; it is kept and reported beside a homogeneous-elasticity version (S2h, S3h: single elasticity 0.698 for all families), whose gains come only from moving hours toward families with more boardings per scheduled hour.
+
+## 2026-11-08T04:01Z | alternatives_v1 | result (S2h, S3h added; supersedes alternatives_v2 for reporting)
+- Run: results/alternatives_v3 (same code and draws as v2 plus S2h and S3h). S1 +1.05% (0.83 to 1.28); S2 +2.80% (2.00 to 3.84); S3 +3.96% (3.07 to 5.07); S2h +3.47% (2.65 to 4.38); S3h +4.46% (3.45 to 5.58).
+- S2h moves hours from 24 donor families to 7 recipients, none of them low-frequency; Equity Emphasis Area share of stop events 0.390 (donors) and 0.374 (recipients). S2 sends 85.6% of added hours to low-frequency families (EEA share 0.355 to 0.449).
+- Reading: holding scheduled speed and reallocating 5% of hours by predicted riders per hour gains 4.0% to 4.5% under either elasticity assumption, against the -1.21 points attributed to the launched reallocation. The direction of the reallocation depends on whether the response to added trips falls with baseline frequency, which the clean-family subsamples do not settle (mechanisms_v1 exploratory entry).

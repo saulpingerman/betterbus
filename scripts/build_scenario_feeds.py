@@ -29,6 +29,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--out", default="scenario_feeds_v1")
     p.add_argument("--alt", default="alternatives_v1", help="folder with s2_reallocation.csv")
+    p.add_argument("--ratio-col", default="hours_ratio", help="hours_ratio or hours_ratio_h")
     args = p.parse_args(argv)
     out = DATA / "processed" / args.out
     if out.exists():
@@ -37,7 +38,8 @@ def main(argv=None):
     new = mem[mem.side == "new"]
     sd = family_service_detail().set_index("family").dropna(subset=["speed_pre", "speed_post"])
     f = (sd.speed_post / sd.speed_pre).rename("f")
-    s2 = pd.read_csv(REPO / "results" / args.alt / "s2_reallocation.csv", index_col=0).hours_ratio
+    s2 = pd.read_csv(REPO / "results" / args.alt / "s2_reallocation.csv", index_col=0)
+    s2 = s2[args.ratio_col].dropna()
     fam_of = new.set_index("route").family
     s1_time = {r: float(f[fam]) for r, fam in fam_of.items() if fam in f.index}
     s1_freq = {r: 1 / v for r, v in s1_time.items()}

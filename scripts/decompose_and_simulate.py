@@ -20,7 +20,8 @@ S2 frequency where it pays: 5% of network weekday hours move from the families w
 predicted riders per added hour to those with the most, using elasticity 0.849 for families with
 pre-launch midday headways above 20.7 minutes and 0.385 otherwise (mechanisms_v1); families with
 no pre-launch midday service have no headway class and neither give nor receive hours; donors lose
-at most 30% and recipients gain at most 50% of their hours. S3: S1 then S2.
+at most 30% and recipients gain at most 50% of their hours. S3: S1 then S2. S2h and S3h repeat S2
+and S3 with one elasticity (0.698) for every family.
 """
 
 import argparse
@@ -175,7 +176,8 @@ def scenarios(w, ft, eea, draws=1000):
                 break
         return (H - cut + add) / H, cut, add
 
-    results = {"S1": [], "S2": [], "S3": []}
+    results = {"S1": [], "S2": [], "S3": [], "S2h": [], "S3h": []}
+    ratio_h, cut_h, add_h = s2_hours(B_MEAN, B_MEAN)
     for _ in range(draws):
         b = RNG.normal(B_MEAN, B_SE)
         bl, bh = RNG.normal(B_LOW, B_LOW_SE), RNG.normal(B_HIGH, B_HIGH_SE)
@@ -184,7 +186,9 @@ def scenarios(w, ft, eea, draws=1000):
         ratio, _, _ = s2_hours(bl, bh)
         s2 = (df.after * (ratio**b_f - 1)).sum()
         s3 = (df.after * (np.exp(b * s1_dlogT) * ratio**b_f - 1)).sum()
-        for k, v in zip(("S1", "S2", "S3"), (s1, s2, s3), strict=True):
+        s2h = (df.after * (ratio_h**b - 1)).sum()
+        s3h = (df.after * (np.exp(b * s1_dlogT) * ratio_h**b - 1)).sum()
+        for k, v in zip(("S1", "S2", "S3", "S2h", "S3h"), (s1, s2, s3, s2h, s3h), strict=True):
             results[k].append(v / df.after.sum() * 100)
     for k, v in results.items():
         v = np.array(v)
@@ -207,10 +211,19 @@ def scenarios(w, ft, eea, draws=1000):
     )
     out["S2_low_frequency_share_of_added_hours"] = round(float(add[low].sum() / add.sum()), 3)
     out["S2_low_frequency_share_of_cut_hours"] = round(float(cut[low].sum() / cut.sum()), 3)
+    out["S2h_donors"], out["S2h_recipients"] = int((cut_h > 0).sum()), int((add_h > 0).sum())
+    out["S2h_eea_share_donors"] = round(
+        float(np.average(df.eea_share[cut_h > 0].fillna(0), weights=cut_h[cut_h > 0])), 3
+    )
+    out["S2h_eea_share_recipients"] = round(
+        float(np.average(df.eea_share[add_h > 0].fillna(0), weights=add_h[add_h > 0])), 3
+    )
+    out["S2h_low_frequency_share_of_added_hours"] = round(float(add_h[low].sum() / add_h.sum()), 3)
+    df["hours_ratio_h"] = ratio_h
     plan = df.assign(hours_change=add - cut, hours_ratio=ratio)[
-        ["hours_change", "hours_ratio", "midday_headway_pre", "eea_share", "after"]
+        ["hours_change", "hours_ratio", "hours_ratio_h", "midday_headway_pre", "eea_share", "after"]
     ]
-    return out, plan[plan.hours_change != 0]
+    return out, plan[(plan.hours_change != 0) | (plan.hours_ratio_h != 1)]
 
 
 def main(argv=None):
