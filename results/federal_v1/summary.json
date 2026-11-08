@@ -1,0 +1,44 @@
+{
+ "families": 100,
+ "exposure_raw_mean": {
+  "fed_work_share": 0.0702,
+  "fed_res_share": 0.0704
+ },
+ "exposure_raw_sd": {
+  "fed_work_share": 0.0922,
+  "fed_res_share": 0.0194
+ },
+ "D_post": 0.709,
+ "fed_work_share 2025-01 to 2025-06": {
+  "mean_beta": -0.0081,
+  "se": 0.0057,
+  "ci95": [
+   -0.0193,
+   0.0031
+  ]
+ },
+ "fed_work_share 2025-07 to 2026-09": {
+  "mean_beta": -0.0288,
+  "se": 0.0268,
+  "ci95": [
+   -0.0813,
+   0.0237
+  ]
+ },
+ "fed_res_share 2025-01 to 2025-06": {
+  "mean_beta": 0.008,
+  "se": 0.0062,
+  "ci95": [
+   -0.0041,
+   0.0202
+  ]
+ },
+ "fed_res_share 2025-07 to 2026-09": {
+  "mean_beta": -0.0174,
+  "se": 0.0305,
+  "ci95": [
+   -0.0772,
+   0.0424
+  ]
+ }
+}

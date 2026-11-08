@@ -156,3 +156,14 @@ Headers are written with the clock:
 - Run: results/alternatives_v3 (same code and draws as v2 plus S2h and S3h). S1 +1.05% (0.83 to 1.28); S2 +2.80% (2.00 to 3.84); S3 +3.96% (3.07 to 5.07); S2h +3.47% (2.65 to 4.38); S3h +4.46% (3.45 to 5.58).
 - S2h moves hours from 24 donor families to 7 recipients, none of them low-frequency; Equity Emphasis Area share of stop events 0.390 (donors) and 0.374 (recipients). S2 sends 85.6% of added hours to low-frequency families (EEA share 0.355 to 0.449).
 - Reading: holding scheduled speed and reallocating 5% of hours by predicted riders per hour gains 4.0% to 4.5% under either elasticity assumption, against the -1.21 points attributed to the launched reallocation. The direction of the reallocation depends on whether the response to added trips falls with baseline frequency, which the clean-family subsamples do not settle (mechanisms_v1 exploratory entry).
+
+## 2026-11-08T04:15Z | federal_v1 | prereg
+- Question: did route families more exposed to federal employment lose more riders in 2025 and 2026, which would help describe the component common to all families?
+- Exposure per family (from its pre-launch routes' stops, May 2025): workplace federal share = LODES 2022 WAC JT04 jobs over JT00 jobs within 400 m of the family's stops (2022, before the 2025 shock); residence federal share = RAC JT04 over JT00 within 400 m. Standardized across families.
+- Specification: log family boardings on family and month fixed effects, D_trips x post (as in event_study_v1) and each standardized exposure x month dummies (reference 2024-12), clustered by family; summaries are the mean coefficient over 2025-01 to 2025-06 (return to office and early cuts, before the redesign) and over 2025-07 to 2026-09.
+- Reading rule: an exposure effect is reported if the period-mean coefficient's 95% interval excludes zero. Not causal for the federal shock; descriptive of where the common decline concentrated.
+
+## 2026-11-08T04:16Z | federal_v1 | result
+- Run: results/federal_v1 (scripts/estimate_federal_exposure.py), 100 families. Raw exposure means (SD): workplace federal share 0.070 (0.092); residence federal share 0.070 (0.019). D_trips x post 0.709 in this model.
+- Per SD of workplace federal share: mean monthly coefficient -0.008 (-0.019 to 0.003) in 2025-01 to 2025-06 and -0.029 (-0.081 to 0.024) in 2025-07 to 2026-09. Per SD of residence share: 0.008 (-0.004 to 0.020) and -0.017 (-0.077 to 0.042).
+- Reading: no differential decline by federal exposure across families; the common component is regionwide in this design. LODES JT04 omits some federal agencies (DC JT04 total 107,963 in 2024), so measurement error biases these toward zero.
