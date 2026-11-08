@@ -33,6 +33,8 @@ def main(argv=None):
     p.add_argument("--date", required=True, help="service date, YYYY-MM-DD (a weekday)")
     p.add_argument("--bus", required=True, help="Mobility Database dataset id of the bus feed")
     p.add_argument("--rail", required=True, help="Mobility Database dataset id of the rail feed")
+    p.add_argument("--bus-path", default=None, help="use this bus GTFS zip instead of --bus")
+    p.add_argument("--extra-gtfs", nargs="*", default=[], help="more GTFS zips (other operators)")
     p.add_argument("--start", default="07:00")
     p.add_argument("--window-min", type=int, default=120)
     p.add_argument("--max-min", type=int, default=60)
@@ -54,9 +56,11 @@ def main(argv=None):
     origins = pts[pts.compact]
     if args.sample:
         origins = origins.sample(args.sample, random_state=0)
+    bus = REPO / args.bus_path if args.bus_path else RAW / "gtfs" / "mdb-1846" / f"{args.bus}.zip"
     gtfs = [
-        RAW / "gtfs" / "mdb-1846" / f"{args.bus}.zip",
+        bus,
         RAW / "gtfs" / "mdb-1847" / f"{args.rail}.zip",
+        *(REPO / g for g in args.extra_gtfs),
     ]
     t0 = time.time()
     network = r5py.TransportNetwork(OSM, [str(g) for g in gtfs])
