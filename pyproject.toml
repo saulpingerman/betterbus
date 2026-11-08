@@ -5,10 +5,20 @@ description = "Causal evaluation of the WMATA Better Bus Network Redesign from p
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "geopandas>=1.2.0",
     "gtfs-realtime-bindings>=1.0",
+    "h3>=4.5.0",
+    "linearmodels>=7.1",
+    "matplotlib>=3.11.2",
     "pandas>=2.2",
     "pyarrow>=17",
+    "pyogrio>=0.13.0",
     "python-dotenv>=1.0",
+    "r5py>=1.1.7",
+    "requests>=2.34.2",
+    "shapely>=2.2.0",
+    "statsmodels>=0.15.0",
+    "zstandard>=0.23",
 ]
 
 [dependency-groups]

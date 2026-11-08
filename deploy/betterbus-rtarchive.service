@@ -1,0 +1,20 @@
+# systemd user unit for the GTFS-Realtime archiver.
+# Install:  ln -sf "$PWD/deploy/betterbus-rtarchive.service" ~/.config/systemd/user/ \
+#           && systemctl --user daemon-reload && systemctl --user enable --now betterbus-rtarchive
+# Logs:     journalctl --user -u betterbus-rtarchive -f
+# State:    data/raw/gtfs-rt/status.json
+[Unit]
+Description=Archive WMATA GTFS-Realtime feeds (betterbus)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/projects/betterbus
+ExecStart=%h/projects/betterbus/.venv/bin/python -m betterbus.rtarchive --interval 30 --min-free-gb 25
+Restart=always
+RestartSec=30
+MemoryMax=1G
+Nice=5
+
+[Install]
+WantedBy=default.target
