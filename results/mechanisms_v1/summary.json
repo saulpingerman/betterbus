@@ -1,0 +1,104 @@
+{
+ "joint_trips_speed_length": {
+  "D_trips": {
+   "beta": 0.9383,
+   "se": 0.0685,
+   "ci95": [
+    0.8041,
+    1.0726
+   ]
+  },
+  "D_speed": {
+   "beta": -1.204,
+   "se": 0.2275,
+   "ci95": [
+    -1.65,
+    -0.7579
+   ]
+  },
+  "D_length": {
+   "beta": 0.754,
+   "se": 0.1142,
+   "ci95": [
+    0.53,
+    0.9779
+   ]
+  },
+  "families": 100,
+  "obs": 4400
+ },
+ "plus_removed_stops": {
+  "D_trips": {
+   "beta": 0.9096,
+   "se": 0.0691,
+   "ci95": [
+    0.774,
+    1.0451
+   ]
+  },
+  "D_speed": {
+   "beta": -1.2378,
+   "se": 0.2351,
+   "ci95": [
+    -1.6986,
+    -0.777
+   ]
+  },
+  "D_length": {
+   "beta": 0.731,
+   "se": 0.1052,
+   "ci95": [
+    0.5248,
+    0.9372
+   ]
+  },
+  "share_events_at_removed_stops": {
+   "beta": -0.2477,
+   "se": 0.2017,
+   "ci95": [
+    -0.643,
+    0.1477
+   ]
+  },
+  "families": 100,
+  "obs": 4400
+ },
+ "trips_only_same_sample": {
+  "D_trips": {
+   "beta": 0.6975,
+   "se": 0.0827,
+   "ci95": [
+    0.5353,
+    0.8598
+   ]
+  },
+  "families": 100,
+  "obs": 4400
+ },
+ "headway_split": {
+  "D_trips_lowfreq": {
+   "beta": 0.8491,
+   "se": 0.0946,
+   "ci95": [
+    0.6636,
+    1.0346
+   ]
+  },
+  "D_trips_highfreq": {
+   "beta": 0.3849,
+   "se": 0.1314,
+   "ci95": [
+    0.1273,
+    0.6425
+   ]
+  },
+  "families": 90,
+  "obs": 3960,
+  "median_midday_headway_min": 20.714285714285715
+ },
+ "treatment_sd": {
+  "D_trips": 0.3404,
+  "D_speed": 0.0808,
+  "D_length": 0.2842
+ }
+}

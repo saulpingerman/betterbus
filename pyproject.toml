@@ -17,6 +17,7 @@ dependencies = [
     "python-dotenv>=1.0",
     "r5py>=1.1.7",
     "requests>=2.34.2",
+    "scikit-learn>=1.9.1",
     "shapely>=2.2.0",
     "statsmodels>=0.15.0",
     "zstandard>=0.23",

@@ -70,3 +70,33 @@ def family_month(families="families_v1", start="2023-01-01", end=None):
     )
     fm = rb.dropna(subset=["family"]).groupby(["family", "month"], as_index=False).boardings.sum()
     return fm, unmatched.fillna(0)
+
+
+def family_service_detail(
+    families="families_v1", service="service_v1", pre="2025-05", post="2025-10"
+):
+    """Per family: weekday trips, hours, miles, speed, miles per trip and midday headway, before
+    (old members, month `pre`) and after (new members, month `post`), with log changes.
+
+    Route values are medians over the month's weekdays; family values are sums over members
+    (midday headway = 300 minutes over the summed peak-direction midday trips).
+    """
+    mem = pd.read_csv(DATA / "processed" / families / "membership.csv")
+    rd = pd.read_parquet(DATA / "processed" / service / "route_day.parquet")
+    rd = rd[rd.day_type == "weekday"].assign(ym=rd.date.dt.strftime("%Y-%m"))
+    cols = ["trips", "revenue_hours", "revenue_miles", "midday_trips_peak_dir"]
+    med = rd.groupby(["ym", "route"])[cols].median().reset_index()
+    parts = {}
+    for label, side, ym in [("pre", "old", pre), ("post", "new", post)]:
+        m = mem[mem.side == side].merge(med[med.ym == ym], on="route", how="left")
+        parts[label] = m.groupby("family")[cols].sum(min_count=1)
+    out = parts["pre"].add_suffix("_pre").join(parts["post"].add_suffix("_post"), how="outer")
+    for s in ("pre", "post"):
+        out[f"speed_{s}"] = out[f"revenue_miles_{s}"] / out[f"revenue_hours_{s}"]
+        out[f"miles_per_trip_{s}"] = out[f"revenue_miles_{s}"] / out[f"trips_{s}"]
+        out[f"midday_headway_{s}"] = 300 / out[f"midday_trips_peak_dir_{s}"].replace(0, np.nan)
+    out["D_trips"] = np.log(out.trips_post / out.trips_pre)
+    out["D_hours"] = np.log(out.revenue_hours_post / out.revenue_hours_pre)
+    out["D_speed"] = np.log(out.speed_post / out.speed_pre)
+    out["D_length"] = np.log(out.miles_per_trip_post / out.miles_per_trip_pre)
+    return out.reset_index()

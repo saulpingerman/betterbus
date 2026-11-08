@@ -1,0 +1,60 @@
+{
+ "visits_only": {
+  "D_visits": {
+   "beta": 1.0201,
+   "se": 0.0367,
+   "ci95": [
+    0.9483,
+    1.092
+   ]
+  },
+  "cells": 1028,
+  "obs": 25700
+ },
+ "visits_and_stops": {
+  "D_visits": {
+   "beta": 1.0159,
+   "se": 0.0474,
+   "ci95": [
+    0.923,
+    1.1087
+   ]
+  },
+  "D_stops": {
+   "beta": 0.0082,
+   "se": 0.0552,
+   "ci95": [
+    -0.1,
+    0.1163
+   ]
+  },
+  "cells": 1028,
+  "obs": 25700
+ },
+ "visits_split_by_baseline": {
+  "D_visits_low": {
+   "beta": 1.0878,
+   "se": 0.0586,
+   "ci95": [
+    0.9729,
+    1.2027
+   ]
+  },
+  "D_visits_high": {
+   "beta": 0.9598,
+   "se": 0.0448,
+   "ci95": [
+    0.872,
+    1.0476
+   ]
+  },
+  "cells": 1028,
+  "obs": 25700,
+  "median_visits_pre": 291.0
+ },
+ "cells_lost_all_service": 169,
+ "share_pre_boardings_in_cells_lost": 0.0145,
+ "treatment_sd": 0.3861,
+ "event_pre_mean": -0.0109,
+ "event_pre_max_abs_t": 5.61
+}
