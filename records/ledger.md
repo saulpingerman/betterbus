@@ -33,3 +33,10 @@ Headers are written with the clock:
 - Median weekday: May 2025 13,881 trips, 10,009 revenue hours; Oct 2025 13,344 trips (-3.9%), 10,504 hours (+4.9%); May 2026 13,425 trips, 10,624 hours.
 - Interpretation (to be tested at route level): the redesign scheduled fewer, longer and slower trips; the "13% more service" is mostly added time (in-trip run time plus layover and recovery), not more trips. Frequency-based treatment measures (trips, headways) and time-based ones (revenue hours) move in opposite directions, so the choice of treatment measure matters.
 - Fix before this run: an earlier build assigned four dates (2025-07-26, 2025-10-16, 2025-10-17, 2026-03-14) to versions whose calendars had no service those days; version coverage is now the set of dates with any active service.
+
+## 2026-11-08T02:39Z | families | result
+- Run: data/processed/families_v1 (scripts/build_route_families.py). Reference networks: last pre-launch version mdb-1846-202505020000 on 2025-05-14 and launch-period version mdb-1846-202507250117 on 2025-07-16.
+- Stop IDs are stable across the redesign: 7,028 stop_ids appear in both the May 2025 and October 2025 feeds (75.9% of the 9,256 pre-launch stops); 95.5% of those are within 20 m of their earlier location. 2,228 stop_ids disappear and 473 are new.
+- 105 families from 185 old and 125 new routes, linked by mutual best match on shared weekday stop events. Largest family has 8 routes (old C12, D12, NH1, NH2, P12; new P90, P93, P94). Old route C11 shares no stop with any new route (flag: discontinued or transferred).
+- Containment (share of a family's pre-launch stop events still served in-family after launch): median 0.80, quartiles 0.60 and 0.92, 10th percentile 0.50. Lowest: F098 (old F14, new P63) 0.28; F029 (old 74, new C55) 0.32; F020 (old W2, W3, new C29) 0.33. Median share of pre-launch stop events at stops removed from the network: 0.11.
+- Next: compare with WMATA's published crosswalk if one is found; test merging low-containment families; report estimates with and without families below a containment cutoff.
