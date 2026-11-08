@@ -12,6 +12,7 @@ dependencies = [
     "matplotlib>=3.11.2",
     "pandas>=2.2",
     "pyarrow>=17",
+    "pymupdf>=2.1",
     "pyogrio>=0.13.0",
     "python-dotenv>=1.0",
     "r5py>=1.1.7",
