@@ -3,7 +3,8 @@
 Usage (from the repository root):
     uv run scripts/summarize_access.py [--store access_v1] [--out access_v1]
 
-Reads data/processed/<store>/{pre,post}/access.parquet (scripts/build_access.py) and joins ACS
+Reads data/processed/<store>/{<a>,<b>}/access.parquet (default a=pre, b=post; columns keep the
+_pre and _post suffixes for a and b) (scripts/build_access.py) and joins ACS
 2020-2024 block-group counts. For each group the script reports the group-weighted mean jobs
 reachable within 30, 45 and 60 minutes before and after, the change, and the share of the group
 living in block groups whose 60-minute access fell. Groups: everyone (B03002 total), Black
@@ -80,10 +81,12 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("--store", default="access_v1")
     p.add_argument("--out", default="access_v1")
+    p.add_argument("--a", default="pre", help="baseline run label (columns *_pre)")
+    p.add_argument("--b", default="post", help="comparison run label (columns *_post)")
     args = p.parse_args(argv)
     store = DATA / "processed" / args.store
-    pre = pd.read_parquet(store / "pre" / "access.parquet").set_index("id")
-    post = pd.read_parquet(store / "post" / "access.parquet").set_index("id")
+    pre = pd.read_parquet(store / args.a / "access.parquet").set_index("id")
+    post = pd.read_parquet(store / args.b / "access.parquet").set_index("id")
     g, n_eea = groups()
     df = pre.add_suffix("_pre").join(post.add_suffix("_post")).join(g, how="inner")
     for c, name in COUNTIES.items():
@@ -121,7 +124,7 @@ def main(argv=None):
             float(df.everyone[df.jobs_60_post == 0].sum() / df.everyone.sum()), 4
         ),
         "run_meta": {
-            k: json.loads((store / k / "run_meta.json").read_text()) for k in ("pre", "post")
+            k: json.loads((store / k / "run_meta.json").read_text()) for k in (args.a, args.b)
         },
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=1, default=str))
