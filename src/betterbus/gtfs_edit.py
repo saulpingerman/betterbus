@@ -52,6 +52,7 @@ def edit_feed(src, dst, time_scale=None, freq_ratio=None):
     st["dep"] = st.t0 + (st.dep - st.t0) * scale
 
     trips["start"] = trips.trip_id.map(first)
+    by_trip = st.groupby("trip_id")
     new_trips, new_st, drop = [], [], set()
     for (route, _, _), g in trips.groupby(["route", "direction_id", "service_id"], dropna=False):
         r = freq_ratio.get(route, 1.0)
@@ -71,7 +72,7 @@ def edit_feed(src, dst, time_scale=None, freq_ratio=None):
             offset = (b.start - a.start) / 2
             new_id = f"{a.trip_id}_x{i}"
             new_trips.append(a.drop(["start"]).to_dict() | {"trip_id": new_id})
-            s = st[st.trip_id == a.trip_id].copy()
+            s = by_trip.get_group(a.trip_id).copy()
             s["trip_id"], s["arr"], s["dep"] = new_id, s.arr + offset, s.dep + offset
             new_st.append(s)
     trips = trips[~trips.trip_id.isin(drop)].drop(columns=["start"])
@@ -87,3 +88,16 @@ def edit_feed(src, dst, time_scale=None, freq_ratio=None):
         for n, b in files.items():
             z.writestr(n, b)
     return {"trips_added": len(new_trips), "trips_dropped": len(drop)}
+
+
+def strip_empty_tables(src, dst):
+    """Copy a GTFS zip without tables that have a header but no rows (R5 rejects them)."""
+    removed = []
+    with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as zout:
+        for n in zin.namelist():
+            b = zin.read(n)
+            if n.endswith(".txt") and len([ln for ln in b.splitlines() if ln.strip()]) <= 1:
+                removed.append(n)
+                continue
+            zout.writestr(n, b)
+    return removed

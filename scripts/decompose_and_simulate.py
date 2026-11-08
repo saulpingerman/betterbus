@@ -18,7 +18,8 @@ Scenarios (ledger: alternatives_v1), each holding weekday scheduled hours fixed:
 S1 speed held: each family's trips scale by its scheduled speed before over after.
 S2 frequency where it pays: 5% of network weekday hours move from the families with the fewest
 predicted riders per added hour to those with the most, using elasticity 0.849 for families with
-pre-launch midday headways above 20.7 minutes and 0.385 otherwise (mechanisms_v1); donors lose
+pre-launch midday headways above 20.7 minutes and 0.385 otherwise (mechanisms_v1); families with
+no pre-launch midday service have no headway class and neither give nor receive hours; donors lose
 at most 30% and recipients gain at most 50% of their hours. S3: S1 then S2.
 """
 
@@ -152,6 +153,7 @@ def scenarios(w, ft, eea, draws=1000):
     def s2_hours(b_low, b_high):
         b_f = np.where(low, b_low, b_high)
         m = b_f * df.after / H  # predicted riders per added hour, per unit hours change
+        m = m[df.midday_headway_pre.notna()]  # families without midday service sit out
         order = m.sort_values().index
         budget = 0.05 * H.sum()
         cut = pd.Series(0.0, index=df.index)
