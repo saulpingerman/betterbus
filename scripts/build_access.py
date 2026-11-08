@@ -35,6 +35,9 @@ def main(argv=None):
     p.add_argument("--rail", required=True, help="Mobility Database dataset id of the rail feed")
     p.add_argument("--bus-path", default=None, help="use this bus GTFS zip instead of --bus")
     p.add_argument("--extra-gtfs", nargs="*", default=[], help="more GTFS zips (other operators)")
+    p.add_argument(
+        "--allow-gtfs-errors", action="store_true", help="let R5 skip invalid GTFS entities"
+    )
     p.add_argument("--start", default="07:00")
     p.add_argument("--window-min", type=int, default=120)
     p.add_argument("--max-min", type=int, default=60)
@@ -63,7 +66,10 @@ def main(argv=None):
         *(REPO / g for g in args.extra_gtfs),
     ]
     t0 = time.time()
-    network = r5py.TransportNetwork(OSM, [str(g) for g in gtfs])
+    # r5py caches networks by input file name: every distinct feed must have a distinct name.
+    network = r5py.TransportNetwork(
+        OSM, [str(g) for g in gtfs], allow_errors=args.allow_gtfs_errors
+    )
     t_net = time.time() - t0
     departure = dt.datetime.fromisoformat(f"{args.date}T{args.start}")
     ttm = r5py.TravelTimeMatrix(
