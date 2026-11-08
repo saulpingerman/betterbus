@@ -1,0 +1,26 @@
+{
+ "families": 104,
+ "weekday_hours": 10504.0,
+ "S1": {
+  "riders_change_pct": 1.05,
+  "p05": 0.83,
+  "p95": 1.28
+ },
+ "S2": {
+  "riders_change_pct": 2.86,
+  "p05": 2.06,
+  "p95": 3.89
+ },
+ "S3": {
+  "riders_change_pct": 4.03,
+  "p05": 3.13,
+  "p95": 5.12
+ },
+ "S1_trips_change_pct": 1.63,
+ "S2_donors": 25,
+ "S2_recipients": 13,
+ "S2_eea_share_donors": 0.33,
+ "S2_eea_share_recipients": 0.449,
+ "S2_low_frequency_share_of_added_hours": 0.856,
+ "S2_low_frequency_share_of_cut_hours": 0.027
+}

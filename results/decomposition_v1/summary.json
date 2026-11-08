@@ -1,0 +1,39 @@
+{
+ "windows": {
+  "before": [
+   "2024-08-01",
+   "2025-05-01"
+  ],
+  "after": [
+   "2025-08-01",
+   "2026-05-01"
+  ]
+ },
+ "boardings_before": 103336659,
+ "boardings_after": 95758106,
+ "observed_change_pct": -7.33,
+ "transferred_routes_boardings_before": 1421678,
+ "components_pct_of_before": {
+  "routes_handed_to_other_operators": {
+   "mean": -1.67,
+   "p05": -1.99,
+   "p95": -1.36
+  },
+  "wmata_trip_reallocation": {
+   "mean": -1.21,
+   "p05": -1.92,
+   "p95": -0.62
+  },
+  "common_to_all_families": {
+   "mean": -4.4,
+   "p05": -5.3,
+   "p95": -3.38
+  },
+  "families_without_trip_measure_and_unmatched_routes": {
+   "mean": -0.05,
+   "p05": -0.05,
+   "p95": -0.05
+  }
+ },
+ "check_sum_mean_pct": -7.33
+}
