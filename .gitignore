@@ -1,0 +1,16 @@
+# Secrets
+.env
+
+# Downloaded and derived data, rebuilt by the scripts
+data/
+
+# Local-only notes and live session state (not published)
+notes/
+records/HANDOFF.md
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
